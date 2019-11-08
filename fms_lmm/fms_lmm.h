@@ -34,8 +34,9 @@ namespace fms::lmm {
 		// f[i] = phi[i] - sigma[i]^2 t[i]^2/2
 	}
 
+	// Modify pointers to get the curve starting at time u.
 	template<class T, class F, class S>
-	inline size_t advance_futures(const T& u, size_t n, T* t, F* phi, S* sigma, const F& alpha)
+	inline size_t advance_futures(const T& u, size_t n, T*& t, F*& phi, S*& sigma, const F& alpha)
 	{
 		std::normal_distribution<T> N(0, sqrt(u));
 
@@ -50,8 +51,9 @@ namespace fms::lmm {
 		return n;
 	}
 
+	// Random forward curve at time u.
 	template<class T, class F, class S>
-	inline size_t advance(const T& u, size_t n, T* t, F* f, S* sigma, const F& alpha)
+	inline size_t advance(const T& u, size_t n, T*& t, F*& f, S*& sigma, const F& alpha)
 	{
 		to_futures(n, t, f, sigma);
 		n = advance_futures(u, n, t, f, sigma, alpha);
