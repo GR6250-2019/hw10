@@ -3,5 +3,5 @@
 
 // Function Wizard category
 #ifndef CATEGORY
-#define CATEGORY L"XLL"
+#define CATEGORY L"LMM"
 #endif
