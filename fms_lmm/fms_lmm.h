@@ -46,6 +46,8 @@ namespace fms::lmm {
 
 		// Decrement n and increment t, phi, and sigma until t[i-1] <= u < t[i]
 
+		// For all i replace t[i] by t[i] - u
+
 		// Advance the remainin curve to time u: phi[i] *= exp(sigma[i]*B_u - sigma[i]^2 u/2)
 
 		return n;
