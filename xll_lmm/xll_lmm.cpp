@@ -21,9 +21,9 @@ AddIn xai_xllproject(
 );
 
 //!!! Implement
-//AddIn xai_lmm_advance
-//Return the bumped forwards past u. See skip example below.
-//Make sure the function is volatile.
+// AddIn xai_lmm_advance
+// Return the bumped forwards past u. See skip example below.
+// Make sure the function is volatile.
 
 #ifdef _DEBUG
 
@@ -38,12 +38,18 @@ inline size_t skip(double u, size_t n, double*& t)
 	return n;
 }
 
+AddIn xai_xll(
+	Document(L"XLL")
+	.Documentation(L"Documentation for the XLL category")
+);
+
 AddIn xai_skip(
 	Function(XLL_FP, L"?xll_skip", L"XLL.SKIP")
 	.Arg(XLL_DOUBLE, L"u", L"is the time to skip to. ")
 	.Arg(XLL_FP, L"t", L"is an array of increasing times. ")
 	.Category(L"XLL")
 	.FunctionHelp(L"Return the elements of the array of times past u. ")
+	.Documentation(L"Doc")
 );
 _FP12* WINAPI xll_skip(double u, _FP12* pt)
 {
