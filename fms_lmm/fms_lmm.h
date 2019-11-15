@@ -24,29 +24,47 @@ namespace fms::lmm {
 	template<class T, class F, class S>
 	inline void to_futures(size_t n, const T* t, F* f, const S* sigma)
 	{
-		// phi[i] = f[i] + sigma[i]^2 t[i]^2/2
+		for (size_t i = 0; i < n; ++i) {
+			f[i] += sigma[i] *sigma[i]* t[i] *t[i] / 2;
+		}
+
 	}
 
 	// Convert futures to forwards.
 	template<class T, class F, class S>
 	inline void to_forwards(size_t n, const T* t, F* phi, const S* sigma)
 	{
-		// f[i] = phi[i] - sigma[i]^2 t[i]^2/2
+		for (size_t i = 0; i < n; ++i) {
+			phi[i] -= sigma[i] * sigma[i] * t[i] * t[i] / 2;
+		}
 	}
 
 	// Modify pointers to get the curve starting at time u.
 	template<class T, class F, class S>
 	inline size_t advance_futures(const T& u, size_t n, T*& t, F*& phi, S*& sigma, const F& alpha)
 	{
-		std::normal_distribution<T> N(0, sqrt(u));
+		static constexpr T eps = std::numeric_limits<T>::epsilon();
+		std::normal_distribution<T> N(0, u == 0 ? eps : sqrt(u));
 
 		// Generate two independent normal random variates.
 		auto B0 = N(dre);
 		auto B1 = N(dre);
 
 		// Decrement n and increment t, phi, and sigma until t[i-1] <= u < t[i]
+		while (n > 0 and *t <= u) {
+			--n;
+			++t;
+			++phi;
+			++sigma;
+		}
 
 		// Advance the remainin curve to time u: phi[i] *= exp(sigma[i]*B_u - sigma[i]^2 u/2)
+		// where B_t = B0_t cos(alpha t) + B1_t sin(alpha t) and B0, B1 are independent
+		for (size_t i = 0; i < n; ++i) {
+			t[i] -= u;
+			auto Bu = B0 * cos(alpha * t[i]) + B1 * sin(alpha * t[i]);
+			phi[i] *= exp(sigma[i] * Bu - sigma[i] * sigma[i] * u / 2);
+		}
 
 		return n;
 	}
