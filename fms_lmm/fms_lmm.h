@@ -43,8 +43,7 @@ namespace fms::lmm {
 	template<class T, class F, class S>
 	inline size_t advance_futures(const T& u, size_t n, T*& t, F*& phi, S*& sigma, const F& alpha)
 	{
-		static constexpr T eps = std::numeric_limits<T>::epsilon();
-		std::normal_distribution<T> N(0, u == 0 ? eps : sqrt(u));
+		std::normal_distribution<T> N;
 
 		// Generate two independent normal random variates.
 		auto B0 = N(dre);

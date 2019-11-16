@@ -126,8 +126,8 @@ _FP12* WINAPI xll_skip(double u, _FP12* pt)
 	static xll::FP12 result;
 
 	double* t = &pt->array[0]; // a pointer to modify
-	size_t n = skip(u, size(*pt), t);
-	result.resize((RW)n, 1);
+	auto n = skip(u, size(*pt), t);
+	result.resize(n, 1);
 	std::copy(t, t + n, result.array());
 
 	return result.get();
