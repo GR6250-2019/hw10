@@ -57,6 +57,8 @@ namespace fms::lmm {
 			++sigma;
 		}
 
+		// For all i replace t[i] by t[i] - u
+
 		// Advance the remainin curve to time u: phi[i] *= exp(sigma[i]*B_u - sigma[i]^2 u/2)
 		// where B_t = B0_t cos(alpha t) + B1_t sin(alpha t) and B0, B1 are independent
 		for (size_t i = 0; i < n; ++i) {
